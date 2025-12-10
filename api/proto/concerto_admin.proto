@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package concerto.admin.v1;
+
+option go_package = "github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1;adminv1";
+
+service ConcertoAdminService {
+  rpc GetSessionStatus (GetSessionStatusRequest) returns (GetSessionStatusResponse);
+
+  rpc AdminUpdateAttempts (AdminUpdateAttemptsRequest) returns (AdminUpdateAttemptsResponse);
+}
+
+message GetSessionStatusRequest {
+  uint64 test_taker_id = 1;
+}
+
+message GetSessionStatusResponse {
+  uint64 test_taker_id = 1;
+  bool   has_active_session = 2;
+  bool   can_update_attempts = 3;
+  int32  session_id = 4;
+  string session_start_date = 5; // Формат: YYYY-MM-DD HH:MM:SS
+}
+
+message AdminUpdateAttemptsRequest {
+  string operation_id  = 1;
+  uint64 test_taker_id = 2;
+  int32  current_attempts = 3;
+  int32  current_used = 4;
+  int32  attempts_to_refund = 5;
+  int32  product_variant = 6;
+  string product_language = 7;
+}
+
+message AdminUpdateAttemptsResponse {
+  bool   success          = 1;
+  string error_code       = 2;
+  string error_message    = 3;
+
+  uint64 test_taker_id    = 4;
+  int32  attempts_total   = 5;
+  int32  attempts_used    = 6;
+  int32 refund = 7;
+
+}
