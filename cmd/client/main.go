@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/proto"
+	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
@@ -35,15 +36,19 @@ func main() {
 		resp.SessionStartDate)
 
 	fmt.Println("▶ Calling AdminUpdateAttempts...")
-
-	updateResp, err := client.AdminUpdateAttempts(ctx, &adminv1.AdminUpdateAttemptsRequest{
+	opID := uuid.NewString()
+	fmt.Println("OperationID:", opID)
+	updateReq := &adminv1.AdminUpdateAttemptsRequest{
+		OperationId:      opID,
 		TestTakerId:      1,
-		CurrentAttempts:  4,
+		CurrentAttempts:  100,
 		CurrentUsed:      2,
-		AttemptsToRefund: 1,
+		AttemptsToRefund: 2,
 		ProductVariant:   1,
 		ProductLanguage:  "ru",
-	})
+	}
+
+	updateResp, err := client.AdminUpdateAttempts(ctx, updateReq)
 	if err != nil {
 		log.Fatal("failed to update attempts: ", err)
 	}
@@ -55,4 +60,5 @@ func main() {
 		fmt.Printf("AdminUpdateAttempts → OK: AttemptsTotal=%d, Used=%d, Refund=%d\n",
 			updateResp.AttemptsTotal, updateResp.AttemptsUsed, updateResp.Refund)
 	}
+
 }
