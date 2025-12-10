@@ -14,9 +14,10 @@ import (
 type App struct {
 	TxManager tx.Manager
 
-	SessionRepo     domain.SessionRepository
-	AttemptsRepo    domain.AttemptsRepository
-	ExportQueueRepo domain.ExportQueueRepository
+	SessionRepo           domain.SessionRepository
+	AttemptsRepo          domain.AttemptsRepository
+	ExportQueueRepo       domain.ExportQueueRepository
+	AttemptsOperationRepo domain.AttemptsOperationRepository
 
 	adminUC domain.AdminAttemptsUseCase
 
@@ -31,8 +32,9 @@ func NewApp(db *gorm.DB) (*App, error) {
 	a.SessionRepo = repository.NewSessionRepository(db)
 	a.AttemptsRepo = repository.NewAttemptsRepository(db)
 	a.ExportQueueRepo = repository.NewExportQueueRepository(db)
+	a.AttemptsOperationRepo = repository.NewAttemptsOperationRepository(db)
 
-	a.adminUC = usecase.NewAdminAttemptsUseCase(txManager, a.SessionRepo, a.AttemptsRepo, a.ExportQueueRepo)
+	a.adminUC = usecase.NewAdminAttemptsUseCase(txManager, a.SessionRepo, a.AttemptsRepo, a.ExportQueueRepo, a.AttemptsOperationRepo)
 
 	a.GRPCServer = grpc.NewServer()
 

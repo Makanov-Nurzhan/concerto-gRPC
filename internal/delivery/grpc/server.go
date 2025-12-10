@@ -52,6 +52,7 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 	}
 
 	input := domain.AdminUpdateAttemptsRequest{
+		OperationID:      req.OperationId,
 		TestTakerID:      req.TestTakerId,
 		AttemptsToRefund: req.AttemptsToRefund,
 		CurrentAttempts:  req.CurrentAttempts,
@@ -89,6 +90,10 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 
 func mapDomainError(err error) (string, string) {
 	switch err {
+	case domain.ErrOperationAlreadyProcessed:
+		return "ALREADY_PROCESSED", err.Error()
+	case domain.ErrOperationInProgress:
+		return "OPERATION_IN_PROGRESS", err.Error()
 	case domain.ErrInvalidRefund:
 		return "INVALID_REFUND", err.Error()
 	case domain.ErrHasActiveSession:

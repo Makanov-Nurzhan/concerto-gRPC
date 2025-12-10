@@ -12,6 +12,7 @@ type adminAttemptUseCase struct {
 	sessionRepo     domain.SessionRepository
 	attemptsRepo    domain.AttemptsRepository
 	exportQueueRepo domain.ExportQueueRepository
+	opRepo          domain.AttemptsOperationRepository
 }
 
 func NewAdminAttemptsUseCase(
@@ -19,12 +20,14 @@ func NewAdminAttemptsUseCase(
 	sessionRepo domain.SessionRepository,
 	attemptsRepo domain.AttemptsRepository,
 	exportQueueRepo domain.ExportQueueRepository,
+	opRepo domain.AttemptsOperationRepository,
 ) domain.AdminAttemptsUseCase {
 	return &adminAttemptUseCase{
 		txManager:       txManager,
 		sessionRepo:     sessionRepo,
 		attemptsRepo:    attemptsRepo,
 		exportQueueRepo: exportQueueRepo,
+		opRepo:          opRepo,
 	}
 }
 
@@ -50,6 +53,42 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 	var result *domain.AdminUpdateAttemptsResponse
 
 	err := a.txManager.Do(ctx, func(txDB *gorm.DB) error {
+		if req.OperationID != "" {
+			op, exists, err := a.opRepo.GetByOperationID(ctx, txDB, req.OperationID)
+			if err != nil {
+				return err
+			}
+			if exists {
+				switch op.Status {
+				case domain.OperationSuccess:
+
+					return domain.ErrOperationAlreadyProcessed
+				case domain.OperationPending:
+					return domain.ErrOperationInProgress
+				}
+			}
+			newOp := &domain.AttemptsOperation{
+				OperationID:      req.OperationID,
+				TestTakerID:      req.TestTakerID,
+				Variant:          req.ProductData.ProductVariant,
+				Lang:             req.ProductData.ProductLanguage,
+				AttemptsToRefund: req.AttemptsToRefund,
+				Status:           domain.OperationPending,
+			}
+			if err := a.opRepo.CreatePending(ctx, txDB, newOp); err != nil {
+				op, exists, err2 := a.opRepo.GetByOperationID(ctx, txDB, req.OperationID)
+				if err2 != nil {
+					return err2
+				}
+				if exists {
+					if op.Status == domain.OperationSuccess {
+						return domain.ErrOperationAlreadyProcessed
+					}
+					return domain.ErrOperationInProgress
+				}
+				return err
+			}
+		}
 		if req.AttemptsToRefund <= 0 {
 			return domain.ErrInvalidRefund
 		}
@@ -92,6 +131,13 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 		if err := a.attemptsRepo.UpdateAttemptsRefund(ctx, txDB, req.TestTakerID, req.AttemptsToRefund, req.ProductData); err != nil {
 			return domain.ErrFailedToUpdate
 		}
+
+		if req.OperationID != "" {
+			if err := a.opRepo.MarkSuccess(ctx, txDB, req.OperationID); err != nil {
+				return err
+			}
+		}
+
 		result = &domain.AdminUpdateAttemptsResponse{
 			Success:       true,
 			ErrorCode:     "",
