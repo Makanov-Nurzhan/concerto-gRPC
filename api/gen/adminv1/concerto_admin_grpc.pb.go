@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             v6.33.2
-// source: api/proto/concerto_admin.proto
+// source: concerto_admin.proto
 
 package adminv1
 
@@ -155,5 +155,5 @@ var ConcertoAdminService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/proto/concerto_admin.proto",
+	Metadata: "concerto_admin.proto",
 }

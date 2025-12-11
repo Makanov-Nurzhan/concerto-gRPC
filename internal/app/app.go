@@ -1,7 +1,7 @@
 package app
 
 import (
-	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/proto"
+	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1"
 	deliverygrpc "github.com/Makanov-Nurzhan/concerto-gRPC/internal/delivery/grpc"
 	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/domain"
 	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/infra/tx"

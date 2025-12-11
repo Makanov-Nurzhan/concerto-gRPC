@@ -3,7 +3,7 @@ package grpc
 import (
 	"context"
 	"errors"
-	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/proto"
+	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1"
 	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/domain"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

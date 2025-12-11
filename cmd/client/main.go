@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/proto"
+	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1"
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
