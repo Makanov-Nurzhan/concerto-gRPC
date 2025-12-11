@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.33.2
-// source: api/proto/concerto_admin.proto
+// source: concerto_admin.proto
 
 package adminv1
 
@@ -30,7 +30,7 @@ type GetSessionStatusRequest struct {
 
 func (x *GetSessionStatusRequest) Reset() {
 	*x = GetSessionStatusRequest{}
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[0]
+	mi := &file_concerto_admin_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *GetSessionStatusRequest) String() string {
 func (*GetSessionStatusRequest) ProtoMessage() {}
 
 func (x *GetSessionStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[0]
+	mi := &file_concerto_admin_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *GetSessionStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSessionStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetSessionStatusRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_concerto_admin_proto_rawDescGZIP(), []int{0}
+	return file_concerto_admin_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetSessionStatusRequest) GetTestTakerId() uint64 {
@@ -78,7 +78,7 @@ type GetSessionStatusResponse struct {
 
 func (x *GetSessionStatusResponse) Reset() {
 	*x = GetSessionStatusResponse{}
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[1]
+	mi := &file_concerto_admin_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -90,7 +90,7 @@ func (x *GetSessionStatusResponse) String() string {
 func (*GetSessionStatusResponse) ProtoMessage() {}
 
 func (x *GetSessionStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[1]
+	mi := &file_concerto_admin_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -103,7 +103,7 @@ func (x *GetSessionStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSessionStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetSessionStatusResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_concerto_admin_proto_rawDescGZIP(), []int{1}
+	return file_concerto_admin_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetSessionStatusResponse) GetTestTakerId() uint64 {
@@ -156,7 +156,7 @@ type AdminUpdateAttemptsRequest struct {
 
 func (x *AdminUpdateAttemptsRequest) Reset() {
 	*x = AdminUpdateAttemptsRequest{}
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[2]
+	mi := &file_concerto_admin_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -168,7 +168,7 @@ func (x *AdminUpdateAttemptsRequest) String() string {
 func (*AdminUpdateAttemptsRequest) ProtoMessage() {}
 
 func (x *AdminUpdateAttemptsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[2]
+	mi := &file_concerto_admin_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -181,7 +181,7 @@ func (x *AdminUpdateAttemptsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminUpdateAttemptsRequest.ProtoReflect.Descriptor instead.
 func (*AdminUpdateAttemptsRequest) Descriptor() ([]byte, []int) {
-	return file_api_proto_concerto_admin_proto_rawDescGZIP(), []int{2}
+	return file_concerto_admin_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *AdminUpdateAttemptsRequest) GetOperationId() string {
@@ -248,7 +248,7 @@ type AdminUpdateAttemptsResponse struct {
 
 func (x *AdminUpdateAttemptsResponse) Reset() {
 	*x = AdminUpdateAttemptsResponse{}
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[3]
+	mi := &file_concerto_admin_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -260,7 +260,7 @@ func (x *AdminUpdateAttemptsResponse) String() string {
 func (*AdminUpdateAttemptsResponse) ProtoMessage() {}
 
 func (x *AdminUpdateAttemptsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_proto_concerto_admin_proto_msgTypes[3]
+	mi := &file_concerto_admin_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +273,7 @@ func (x *AdminUpdateAttemptsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdminUpdateAttemptsResponse.ProtoReflect.Descriptor instead.
 func (*AdminUpdateAttemptsResponse) Descriptor() ([]byte, []int) {
-	return file_api_proto_concerto_admin_proto_rawDescGZIP(), []int{3}
+	return file_concerto_admin_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AdminUpdateAttemptsResponse) GetSuccess() bool {
@@ -325,11 +325,11 @@ func (x *AdminUpdateAttemptsResponse) GetRefund() int32 {
 	return 0
 }
 
-var File_api_proto_concerto_admin_proto protoreflect.FileDescriptor
+var File_concerto_admin_proto protoreflect.FileDescriptor
 
-const file_api_proto_concerto_admin_proto_rawDesc = "" +
+const file_concerto_admin_proto_rawDesc = "" +
 	"\n" +
-	"\x1eapi/proto/concerto_admin.proto\x12\x11concerto.admin.v1\"=\n" +
+	"\x14concerto_admin.proto\x12\x11concerto.admin.v1\"=\n" +
 	"\x17GetSessionStatusRequest\x12\"\n" +
 	"\rtest_taker_id\x18\x01 \x01(\x04R\vtestTakerId\"\xe9\x01\n" +
 	"\x18GetSessionStatusResponse\x12\"\n" +
@@ -361,25 +361,25 @@ const file_api_proto_concerto_admin_proto_rawDesc = "" +
 	"\x13AdminUpdateAttempts\x12-.concerto.admin.v1.AdminUpdateAttemptsRequest\x1a..concerto.admin.v1.AdminUpdateAttemptsResponseBBZ@github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1;adminv1b\x06proto3"
 
 var (
-	file_api_proto_concerto_admin_proto_rawDescOnce sync.Once
-	file_api_proto_concerto_admin_proto_rawDescData []byte
+	file_concerto_admin_proto_rawDescOnce sync.Once
+	file_concerto_admin_proto_rawDescData []byte
 )
 
-func file_api_proto_concerto_admin_proto_rawDescGZIP() []byte {
-	file_api_proto_concerto_admin_proto_rawDescOnce.Do(func() {
-		file_api_proto_concerto_admin_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_api_proto_concerto_admin_proto_rawDesc), len(file_api_proto_concerto_admin_proto_rawDesc)))
+func file_concerto_admin_proto_rawDescGZIP() []byte {
+	file_concerto_admin_proto_rawDescOnce.Do(func() {
+		file_concerto_admin_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_concerto_admin_proto_rawDesc), len(file_concerto_admin_proto_rawDesc)))
 	})
-	return file_api_proto_concerto_admin_proto_rawDescData
+	return file_concerto_admin_proto_rawDescData
 }
 
-var file_api_proto_concerto_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_api_proto_concerto_admin_proto_goTypes = []any{
+var file_concerto_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_concerto_admin_proto_goTypes = []any{
 	(*GetSessionStatusRequest)(nil),     // 0: concerto.admin.v1.GetSessionStatusRequest
 	(*GetSessionStatusResponse)(nil),    // 1: concerto.admin.v1.GetSessionStatusResponse
 	(*AdminUpdateAttemptsRequest)(nil),  // 2: concerto.admin.v1.AdminUpdateAttemptsRequest
 	(*AdminUpdateAttemptsResponse)(nil), // 3: concerto.admin.v1.AdminUpdateAttemptsResponse
 }
-var file_api_proto_concerto_admin_proto_depIdxs = []int32{
+var file_concerto_admin_proto_depIdxs = []int32{
 	0, // 0: concerto.admin.v1.ConcertoAdminService.GetSessionStatus:input_type -> concerto.admin.v1.GetSessionStatusRequest
 	2, // 1: concerto.admin.v1.ConcertoAdminService.AdminUpdateAttempts:input_type -> concerto.admin.v1.AdminUpdateAttemptsRequest
 	1, // 2: concerto.admin.v1.ConcertoAdminService.GetSessionStatus:output_type -> concerto.admin.v1.GetSessionStatusResponse
@@ -391,26 +391,26 @@ var file_api_proto_concerto_admin_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_api_proto_concerto_admin_proto_init() }
-func file_api_proto_concerto_admin_proto_init() {
-	if File_api_proto_concerto_admin_proto != nil {
+func init() { file_concerto_admin_proto_init() }
+func file_concerto_admin_proto_init() {
+	if File_concerto_admin_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_proto_concerto_admin_proto_rawDesc), len(file_api_proto_concerto_admin_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_concerto_admin_proto_rawDesc), len(file_concerto_admin_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_api_proto_concerto_admin_proto_goTypes,
-		DependencyIndexes: file_api_proto_concerto_admin_proto_depIdxs,
-		MessageInfos:      file_api_proto_concerto_admin_proto_msgTypes,
+		GoTypes:           file_concerto_admin_proto_goTypes,
+		DependencyIndexes: file_concerto_admin_proto_depIdxs,
+		MessageInfos:      file_concerto_admin_proto_msgTypes,
 	}.Build()
-	File_api_proto_concerto_admin_proto = out.File
-	file_api_proto_concerto_admin_proto_goTypes = nil
-	file_api_proto_concerto_admin_proto_depIdxs = nil
+	File_concerto_admin_proto = out.File
+	file_concerto_admin_proto_goTypes = nil
+	file_concerto_admin_proto_depIdxs = nil
 }

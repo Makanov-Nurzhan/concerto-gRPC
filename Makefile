@@ -1,15 +1,16 @@
 PROTO_DIR = api/proto
+PROTO_DIR = api/proto
+GEN_DIR   = api/gen/adminv1
 
 PROTO_FILES = $(PROTO_DIR)/concerto_admin.proto
 
-PROTO_OUT = .
-
-
 proto: $(PROTO_FILES)
 	protoc \
-		--go_out=$(PROTO_OUT) --go_opt=paths=source_relative \
-		--go-grpc_out=$(PROTO_OUT) --go-grpc_opt=paths=source_relative \
+		-I=$(PROTO_DIR) \
+		--go_out=$(GEN_DIR) --go_opt=paths=source_relative \
+		--go-grpc_out=$(GEN_DIR) --go-grpc_opt=paths=source_relative \
 		$(PROTO_FILES)
+
 
 install-tools:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
