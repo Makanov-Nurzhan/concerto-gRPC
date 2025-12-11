@@ -2,10 +2,12 @@ package grpc
 
 import (
 	"context"
+	"errors"
 	adminv1 "github.com/Makanov-Nurzhan/concerto-gRPC/api/proto"
 	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/domain"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log/slog"
 )
 
 type Server struct {
@@ -18,14 +20,17 @@ func NewServer(adminUC domain.AdminAttemptsUseCase) *Server {
 }
 
 func (s *Server) GetSessionStatus(ctx context.Context, req *adminv1.GetSessionStatusRequest) (*adminv1.GetSessionStatusResponse, error) {
+	logger := slog.Default().With("method", "GetSessionStatus")
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "request is null")
 	}
 	if req.TestTakerId == 0 {
 		return nil, status.Error(codes.InvalidArgument, "test_taker_id is required")
 	}
+	logger = logger.With("test_taker_id", req.TestTakerId)
 	st, err := s.adminUC.GetSessionStatus(ctx, req.TestTakerId)
 	if err != nil {
+		logger.ErrorContext(ctx, "get session status failed", "error", err)
 		return nil, err
 	}
 
@@ -40,16 +45,39 @@ func (s *Server) GetSessionStatus(ctx context.Context, req *adminv1.GetSessionSt
 	} else {
 		resp.SessionStartDate = ""
 	}
+	logger.InfoContext(ctx, "get session status success",
+		"has_active_session", resp.HasActiveSession,
+		"can_update_attempts", resp.CanUpdateAttempts,
+		"session_id", resp.SessionId,
+		"session_start_date", resp.SessionStartDate,
+	)
 	return resp, nil
 }
 
 func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpdateAttemptsRequest) (*adminv1.AdminUpdateAttemptsResponse, error) {
+	logger := slog.Default().With("method", "AdminUpdateAttempts")
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "request is nil")
 	}
 	if req.TestTakerId == 0 {
 		return nil, status.Error(codes.InvalidArgument, "test_taker_id is required")
 	}
+	if req.OperationId == "" {
+		return nil, status.Error(codes.InvalidArgument, "operation_id is required")
+	}
+	if req.ProductLanguage == "" {
+		return nil, status.Error(codes.InvalidArgument, "invalid arguments")
+	}
+
+	logger = logger.With(
+		"operation_id", req.OperationId,
+		"test_taker_id", req.TestTakerId,
+		"product_variant", req.ProductVariant,
+		"product_language", req.ProductLanguage,
+		"attempts_to_refund", req.AttemptsToRefund,
+		"current_attempts", req.CurrentAttempts,
+		"current_used", req.CurrentUsed,
+	)
 
 	input := domain.AdminUpdateAttemptsRequest{
 		OperationID:      req.OperationId,
@@ -66,6 +94,7 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 	resp, err := s.adminUC.AdminUpdateAttempts(ctx, input)
 	if err != nil {
 		code, msg := mapDomainError(err)
+		logger.WarnContext(ctx, "admin update attempts failed", "code", code, "error", err)
 		return &adminv1.AdminUpdateAttemptsResponse{
 			Success:       false,
 			ErrorCode:     code,
@@ -77,6 +106,11 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 		}, nil
 	}
 
+	logger.InfoContext(ctx, "admin update attempts success",
+		"attempts_total", resp.AttemptsTotal,
+		"attempts_used", resp.AttemptsUsed,
+		"refund", resp.Refund,
+	)
 	return &adminv1.AdminUpdateAttemptsResponse{
 		Success:       resp.Success,
 		ErrorCode:     resp.ErrorCode,
@@ -89,22 +123,22 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 }
 
 func mapDomainError(err error) (string, string) {
-	switch err {
-	case domain.ErrOperationAlreadyProcessed:
+	switch {
+	case errors.Is(err, domain.ErrOperationAlreadyProcessed):
 		return "ALREADY_PROCESSED", err.Error()
-	case domain.ErrOperationInProgress:
+	case errors.Is(err, domain.ErrOperationInProgress):
 		return "OPERATION_IN_PROGRESS", err.Error()
-	case domain.ErrInvalidRefund:
+	case errors.Is(err, domain.ErrInvalidRefund):
 		return "INVALID_REFUND", err.Error()
-	case domain.ErrHasActiveSession:
+	case errors.Is(err, domain.ErrHasActiveSession):
 		return "HAS_ACTIVE_SESSION", err.Error()
-	case domain.ErrInvalidAttemptCount:
+	case errors.Is(err, domain.ErrInvalidAttemptCount):
 		return "INVALID_ATTEMPT_COUNT", err.Error()
-	case domain.ErrInvalidTotalAttempts:
+	case errors.Is(err, domain.ErrInvalidTotalAttempts):
 		return "INVALID_TOTAL_ATTEMPTS", err.Error()
-	case domain.ErrFirstDayAttempts:
+	case errors.Is(err, domain.ErrFirstDayAttempts):
 		return "FIRST_DAY_ATTEMPTS", err.Error()
-	case domain.ErrFailedToUpdate:
+	case errors.Is(err, domain.ErrFailedToUpdate):
 		return "FAILED_TO_UPDATE", err.Error()
 	default:
 		return "INTERNAL_ERROR", err.Error()

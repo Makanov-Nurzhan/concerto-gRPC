@@ -41,9 +41,9 @@ func main() {
 	updateReq := &adminv1.AdminUpdateAttemptsRequest{
 		OperationId:      opID,
 		TestTakerId:      1,
-		CurrentAttempts:  100,
+		CurrentAttempts:  4,
 		CurrentUsed:      2,
-		AttemptsToRefund: 2,
+		AttemptsToRefund: 1,
 		ProductVariant:   1,
 		ProductLanguage:  "ru",
 	}
