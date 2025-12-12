@@ -2,9 +2,14 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/domain"
+	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/events"
 	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/infra/tx"
+	"github.com/Makanov-Nurzhan/concerto-gRPC/internal/outbox"
 	"gorm.io/gorm"
+	"strconv"
+	"time"
 )
 
 type adminAttemptUseCase struct {
@@ -136,6 +141,25 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 			if err := a.opRepo.MarkSuccess(ctx, txDB, req.OperationID); err != nil {
 				return err
 			}
+		}
+		payload := events.RefundUpdateV1{
+			OperationID: req.OperationID,
+			TestTakerID: req.TestTakerID,
+			Variant:     req.ProductData.ProductVariant,
+			Lang:        req.ProductData.ProductLanguage,
+			Refund:      req.AttemptsToRefund,
+			OccurredAt:  time.Now(),
+		}
+
+		msg := outbox.Message{
+			ID:    fmt.Sprintf("refund.update.%s", req.OperationID),
+			Topic: events.TopicRefundUpdate,
+			Key:   strconv.FormatUint(req.TestTakerID, 10),
+			Body:  payload,
+		}
+
+		if err := outbox.Publish(ctx, txDB, msg); err != nil {
+			return err
 		}
 
 		result = &domain.AdminUpdateAttemptsResponse{
