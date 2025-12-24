@@ -73,12 +73,13 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 				}
 			}
 			newOp := &domain.AttemptsOperation{
-				OperationID:      req.OperationID,
-				TestTakerID:      req.TestTakerID,
-				Variant:          req.ProductData.ProductVariant,
-				Lang:             req.ProductData.ProductLanguage,
-				AttemptsToRefund: req.AttemptsToRefund,
-				Status:           domain.OperationPending,
+				OperationID:   req.OperationID,
+				TestTakerID:   req.TestTakerID,
+				Variant:       req.ProductData.ProductVariant,
+				Lang:          req.ProductData.ProductLanguage,
+				Attempts:      req.AttemptsToRefund,
+				OperationType: domain.OperationRefund,
+				Status:        domain.OperationPending,
 			}
 			if err := a.opRepo.CreatePending(ctx, txDB, newOp); err != nil {
 				op, exists, err2 := a.opRepo.GetByOperationID(ctx, txDB, req.OperationID)
@@ -170,6 +171,97 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 			AttemptsTotal: attempts.Attempts,
 			AttemptsUsed:  attempts.Used,
 			Refund:        req.AttemptsToRefund + attempts.Refund,
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (a *adminAttemptUseCase) AdminAddAttempts(ctx context.Context, req domain.AdminAddAttemptsRequest) (*domain.AdminUpdateAttemptsResponse, error) {
+	var result *domain.AdminUpdateAttemptsResponse
+
+	err := a.txManager.Do(ctx, func(txDB *gorm.DB) error {
+		if req.OperationID != "" {
+			op, exists, err := a.opRepo.GetByOperationID(ctx, txDB, req.OperationID)
+			if err != nil {
+				return err
+			}
+			if exists {
+				switch op.Status {
+				case domain.OperationSuccess:
+
+					return domain.ErrOperationAlreadyProcessed
+				case domain.OperationPending:
+					return domain.ErrOperationInProgress
+				}
+			}
+			newOp := &domain.AttemptsOperation{
+				OperationID:   req.OperationID,
+				TestTakerID:   req.TestTakerID,
+				Variant:       req.ProductData.ProductVariant,
+				Lang:          req.ProductData.ProductLanguage,
+				Attempts:      req.AttemptsToAdd,
+				OperationType: domain.OperationAdded,
+				Status:        domain.OperationPending,
+			}
+			if err := a.opRepo.CreatePending(ctx, txDB, newOp); err != nil {
+				op, exists, err2 := a.opRepo.GetByOperationID(ctx, txDB, req.OperationID)
+				if err2 != nil {
+					return err2
+				}
+				if exists {
+					if op.Status == domain.OperationSuccess {
+						return domain.ErrOperationAlreadyProcessed
+					}
+					return domain.ErrOperationInProgress
+				}
+				return err
+			}
+		}
+
+		if req.AttemptsToAdd <= 0 {
+			return domain.ErrInvalidAttemptToAdd
+		}
+		attempts, err := a.attemptsRepo.GetAttemptsForUpdate(ctx, txDB, req.TestTakerID, req.ProductData)
+		if err != nil {
+			return err
+		}
+		if attempts.Attempts != req.CurrentAttempts || attempts.Used != req.CurrentUsed {
+			return domain.ErrInvalidAttemptCount
+		}
+		if err := a.attemptsRepo.AddAttempts(ctx, txDB, req.TestTakerID, req.AttemptsToAdd, req.ProductData); err != nil {
+			return err
+		}
+		payload := events.AddAttemptsV1{
+			OperationID: req.OperationID,
+			TestTakerID: req.TestTakerID,
+			Variant:     req.ProductData.ProductVariant,
+			Lang:        req.ProductData.ProductLanguage,
+			Attempts:    req.AttemptsToAdd,
+			OccurredAt:  time.Now(),
+		}
+
+		masg := outbox.Message{
+			ID:    fmt.Sprintf("add.attempts.%s", req.OperationID),
+			Topic: events.TopicAddAttempts,
+			Key:   strconv.FormatUint(req.TestTakerID, 10),
+			Body:  payload,
+		}
+
+		if err := outbox.Publish(ctx, txDB, masg); err != nil {
+			return err
+		}
+		result = &domain.AdminUpdateAttemptsResponse{
+			Success:       true,
+			ErrorCode:     "",
+			ErrorMessage:  "Success",
+			TestTakerID:   req.TestTakerID,
+			AttemptsTotal: attempts.Attempts + req.AttemptsToAdd,
+			AttemptsUsed:  attempts.Used,
+			Refund:        attempts.Refund,
 		}
 		return nil
 	})

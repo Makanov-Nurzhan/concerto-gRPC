@@ -11,4 +11,5 @@ var (
 	ErrFailedToUpdate            = errors.New("failed to update")
 	ErrOperationAlreadyProcessed = errors.New("operation already processed")
 	ErrOperationInProgress       = errors.New("operation is in progress")
+	ErrInvalidAttemptToAdd       = errors.New("invalid attempt to add")
 )

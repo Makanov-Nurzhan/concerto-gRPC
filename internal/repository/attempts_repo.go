@@ -54,3 +54,17 @@ func (a *attemptsRepo) UpdateAttemptsRefund(ctx context.Context, db *gorm.DB, te
 			AND lang = ?
 			`, refund, testTakerID, data.ProductVariant, data.ProductLanguage).Error
 }
+
+func (a *attemptsRepo) AddAttempts(ctx context.Context, db *gorm.DB, testTakerID uint64, attempts int32, data domain.ProductData) error {
+	if db == nil {
+		db = a.db
+	}
+	return db.WithContext(ctx).
+		Exec(`
+			UPDATE online_ko_variants_access
+			SET attempts = attempts + ?
+			Where user_id = ?
+			AND variant = ?
+			AND lang = ?
+			`, attempts, testTakerID, data.ProductVariant, data.ProductLanguage).Error
+}

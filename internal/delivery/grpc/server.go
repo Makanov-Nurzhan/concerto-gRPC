@@ -106,7 +106,7 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 		}, nil
 	}
 
-	logger.InfoContext(ctx, "admin update attempts success",
+	logger.InfoContext(ctx, "admin update refund success",
 		"attempts_total", resp.AttemptsTotal,
 		"attempts_used", resp.AttemptsUsed,
 		"refund", resp.Refund,
@@ -116,6 +116,63 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 		ErrorCode:     resp.ErrorCode,
 		ErrorMessage:  resp.ErrorMessage,
 		TestTakerId:   resp.TestTakerID,
+		AttemptsTotal: resp.AttemptsTotal,
+		AttemptsUsed:  resp.AttemptsUsed,
+		Refund:        resp.Refund,
+	}, nil
+}
+
+func (s *Server) AddAttempts(ctx context.Context, req *adminv1.AdminAddAttemptsRequest) (*adminv1.AdminUpdateAttemptsResponse, error) {
+	logger := slog.Default().With("method", "AddAttempts")
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "request is nil")
+	}
+	if req.TestTakerId == 0 {
+		return nil, status.Error(codes.InvalidArgument, "test_taker_id is required")
+	}
+	if req.OperationId == "" {
+		return nil, status.Error(codes.InvalidArgument, "operation_id is required")
+	}
+	if req.ProductLanguage == "" {
+		return nil, status.Error(codes.InvalidArgument, "invalid arguments")
+	}
+
+	input := domain.AdminAddAttemptsRequest{
+		OperationID:     req.OperationId,
+		TestTakerID:     req.TestTakerId,
+		AttemptsToAdd:   req.AttemptsToAdd,
+		CurrentAttempts: req.CurrentAttempts,
+		CurrentUsed:     req.CurrentUsed,
+		ProductData: domain.ProductData{
+			ProductVariant:  req.ProductVariant,
+			ProductLanguage: req.ProductLanguage,
+		},
+	}
+	resp, err := s.adminUC.AdminAddAttempts(ctx, input)
+	if err != nil {
+		code, msg := mapDomainError(err)
+		logger.WarnContext(ctx, "admin update attempts failed", "code", code, "error", err)
+		return &adminv1.AdminUpdateAttemptsResponse{
+			Success:       false,
+			ErrorCode:     code,
+			ErrorMessage:  msg,
+			TestTakerId:   req.TestTakerId,
+			AttemptsTotal: 0,
+			AttemptsUsed:  0,
+			Refund:        0,
+		}, nil
+	}
+
+	logger.InfoContext(ctx, "admin update attempts success",
+		"attempts_total", resp.AttemptsTotal,
+		"attempts_used", resp.AttemptsUsed,
+	)
+
+	return &adminv1.AdminUpdateAttemptsResponse{
+		Success:       resp.Success,
+		ErrorCode:     resp.ErrorCode,
+		ErrorMessage:  resp.ErrorMessage,
+		TestTakerId:   req.TestTakerId,
 		AttemptsTotal: resp.AttemptsTotal,
 		AttemptsUsed:  resp.AttemptsUsed,
 		Refund:        resp.Refund,
@@ -140,6 +197,8 @@ func mapDomainError(err error) (string, string) {
 		return "FIRST_DAY_ATTEMPTS", err.Error()
 	case errors.Is(err, domain.ErrFailedToUpdate):
 		return "FAILED_TO_UPDATE", err.Error()
+	case errors.Is(err, domain.ErrInvalidAttemptToAdd):
+		return "INVALID_ATTEMPT_TO_ADD", err.Error()
 	default:
 		return "INTERNAL_ERROR", err.Error()
 	}

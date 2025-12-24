@@ -325,6 +325,98 @@ func (x *AdminUpdateAttemptsResponse) GetRefund() int32 {
 	return 0
 }
 
+type AdminAddAttemptsRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	OperationId     string                 `protobuf:"bytes,1,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
+	TestTakerId     uint64                 `protobuf:"varint,2,opt,name=test_taker_id,json=testTakerId,proto3" json:"test_taker_id,omitempty"`
+	AttemptsToAdd   int32                  `protobuf:"varint,3,opt,name=attempts_to_add,json=attemptsToAdd,proto3" json:"attempts_to_add,omitempty"`
+	CurrentAttempts int32                  `protobuf:"varint,4,opt,name=current_attempts,json=currentAttempts,proto3" json:"current_attempts,omitempty"`
+	CurrentUsed     int32                  `protobuf:"varint,5,opt,name=current_used,json=currentUsed,proto3" json:"current_used,omitempty"`
+	ProductVariant  int32                  `protobuf:"varint,6,opt,name=product_variant,json=productVariant,proto3" json:"product_variant,omitempty"`
+	ProductLanguage string                 `protobuf:"bytes,7,opt,name=product_language,json=productLanguage,proto3" json:"product_language,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *AdminAddAttemptsRequest) Reset() {
+	*x = AdminAddAttemptsRequest{}
+	mi := &file_concerto_admin_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminAddAttemptsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminAddAttemptsRequest) ProtoMessage() {}
+
+func (x *AdminAddAttemptsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_concerto_admin_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminAddAttemptsRequest.ProtoReflect.Descriptor instead.
+func (*AdminAddAttemptsRequest) Descriptor() ([]byte, []int) {
+	return file_concerto_admin_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AdminAddAttemptsRequest) GetOperationId() string {
+	if x != nil {
+		return x.OperationId
+	}
+	return ""
+}
+
+func (x *AdminAddAttemptsRequest) GetTestTakerId() uint64 {
+	if x != nil {
+		return x.TestTakerId
+	}
+	return 0
+}
+
+func (x *AdminAddAttemptsRequest) GetAttemptsToAdd() int32 {
+	if x != nil {
+		return x.AttemptsToAdd
+	}
+	return 0
+}
+
+func (x *AdminAddAttemptsRequest) GetCurrentAttempts() int32 {
+	if x != nil {
+		return x.CurrentAttempts
+	}
+	return 0
+}
+
+func (x *AdminAddAttemptsRequest) GetCurrentUsed() int32 {
+	if x != nil {
+		return x.CurrentUsed
+	}
+	return 0
+}
+
+func (x *AdminAddAttemptsRequest) GetProductVariant() int32 {
+	if x != nil {
+		return x.ProductVariant
+	}
+	return 0
+}
+
+func (x *AdminAddAttemptsRequest) GetProductLanguage() string {
+	if x != nil {
+		return x.ProductLanguage
+	}
+	return ""
+}
+
 var File_concerto_admin_proto protoreflect.FileDescriptor
 
 const file_concerto_admin_proto_rawDesc = "" +
@@ -355,10 +447,19 @@ const file_concerto_admin_proto_rawDesc = "" +
 	"\rtest_taker_id\x18\x04 \x01(\x04R\vtestTakerId\x12%\n" +
 	"\x0eattempts_total\x18\x05 \x01(\x05R\rattemptsTotal\x12#\n" +
 	"\rattempts_used\x18\x06 \x01(\x05R\fattemptsUsed\x12\x16\n" +
-	"\x06refund\x18\a \x01(\x05R\x06refund2\xf9\x01\n" +
+	"\x06refund\x18\a \x01(\x05R\x06refund\"\xaa\x02\n" +
+	"\x17AdminAddAttemptsRequest\x12!\n" +
+	"\foperation_id\x18\x01 \x01(\tR\voperationId\x12\"\n" +
+	"\rtest_taker_id\x18\x02 \x01(\x04R\vtestTakerId\x12&\n" +
+	"\x0fattempts_to_add\x18\x03 \x01(\x05R\rattemptsToAdd\x12)\n" +
+	"\x10current_attempts\x18\x04 \x01(\x05R\x0fcurrentAttempts\x12!\n" +
+	"\fcurrent_used\x18\x05 \x01(\x05R\vcurrentUsed\x12'\n" +
+	"\x0fproduct_variant\x18\x06 \x01(\x05R\x0eproductVariant\x12)\n" +
+	"\x10product_language\x18\a \x01(\tR\x0fproductLanguage2\xe9\x02\n" +
 	"\x14ConcertoAdminService\x12k\n" +
 	"\x10GetSessionStatus\x12*.concerto.admin.v1.GetSessionStatusRequest\x1a+.concerto.admin.v1.GetSessionStatusResponse\x12t\n" +
-	"\x13AdminUpdateAttempts\x12-.concerto.admin.v1.AdminUpdateAttemptsRequest\x1a..concerto.admin.v1.AdminUpdateAttemptsResponseBBZ@github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1;adminv1b\x06proto3"
+	"\x13AdminUpdateAttempts\x12-.concerto.admin.v1.AdminUpdateAttemptsRequest\x1a..concerto.admin.v1.AdminUpdateAttemptsResponse\x12n\n" +
+	"\x10AdminAddAttempts\x12*.concerto.admin.v1.AdminAddAttemptsRequest\x1a..concerto.admin.v1.AdminUpdateAttemptsResponseBBZ@github.com/Makanov-Nurzhan/concerto-gRPC/api/gen/adminv1;adminv1b\x06proto3"
 
 var (
 	file_concerto_admin_proto_rawDescOnce sync.Once
@@ -372,20 +473,23 @@ func file_concerto_admin_proto_rawDescGZIP() []byte {
 	return file_concerto_admin_proto_rawDescData
 }
 
-var file_concerto_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_concerto_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_concerto_admin_proto_goTypes = []any{
 	(*GetSessionStatusRequest)(nil),     // 0: concerto.admin.v1.GetSessionStatusRequest
 	(*GetSessionStatusResponse)(nil),    // 1: concerto.admin.v1.GetSessionStatusResponse
 	(*AdminUpdateAttemptsRequest)(nil),  // 2: concerto.admin.v1.AdminUpdateAttemptsRequest
 	(*AdminUpdateAttemptsResponse)(nil), // 3: concerto.admin.v1.AdminUpdateAttemptsResponse
+	(*AdminAddAttemptsRequest)(nil),     // 4: concerto.admin.v1.AdminAddAttemptsRequest
 }
 var file_concerto_admin_proto_depIdxs = []int32{
 	0, // 0: concerto.admin.v1.ConcertoAdminService.GetSessionStatus:input_type -> concerto.admin.v1.GetSessionStatusRequest
 	2, // 1: concerto.admin.v1.ConcertoAdminService.AdminUpdateAttempts:input_type -> concerto.admin.v1.AdminUpdateAttemptsRequest
-	1, // 2: concerto.admin.v1.ConcertoAdminService.GetSessionStatus:output_type -> concerto.admin.v1.GetSessionStatusResponse
-	3, // 3: concerto.admin.v1.ConcertoAdminService.AdminUpdateAttempts:output_type -> concerto.admin.v1.AdminUpdateAttemptsResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	4, // 2: concerto.admin.v1.ConcertoAdminService.AdminAddAttempts:input_type -> concerto.admin.v1.AdminAddAttemptsRequest
+	1, // 3: concerto.admin.v1.ConcertoAdminService.GetSessionStatus:output_type -> concerto.admin.v1.GetSessionStatusResponse
+	3, // 4: concerto.admin.v1.ConcertoAdminService.AdminUpdateAttempts:output_type -> concerto.admin.v1.AdminUpdateAttemptsResponse
+	3, // 5: concerto.admin.v1.ConcertoAdminService.AdminAddAttempts:output_type -> concerto.admin.v1.AdminUpdateAttemptsResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -402,7 +506,7 @@ func file_concerto_admin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_concerto_admin_proto_rawDesc), len(file_concerto_admin_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
