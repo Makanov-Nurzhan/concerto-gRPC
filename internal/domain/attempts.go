@@ -11,14 +11,19 @@ const (
 	OperationPending OperationStatus = "pending"
 	OperationSuccess OperationStatus = "success"
 )
+const (
+	OperationRefund string = "refund"
+	OperationAdded  string = "added"
+)
 
 type AttemptsOperation struct {
-	OperationID      string
-	TestTakerID      uint64
-	Variant          int32
-	Lang             string
-	AttemptsToRefund int32
-	Status           OperationStatus
+	OperationID   string
+	TestTakerID   uint64
+	Variant       int32
+	Lang          string
+	Attempts      int32
+	OperationType string
+	Status        OperationStatus
 }
 
 type AttemptsOperationRepository interface {

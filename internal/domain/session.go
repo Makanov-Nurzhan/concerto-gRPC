@@ -47,6 +47,15 @@ type AdminUpdateAttemptsRequest struct {
 	ProductData      ProductData
 }
 
+type AdminAddAttemptsRequest struct {
+	OperationID     string
+	TestTakerID     uint64
+	CurrentAttempts int32
+	CurrentUsed     int32
+	AttemptsToAdd   int32
+	ProductData     ProductData
+}
+
 type AdminUpdateAttemptsResponse struct {
 	Success       bool
 	ErrorCode     string
@@ -64,6 +73,7 @@ type SessionRepository interface {
 type AttemptsRepository interface {
 	GetAttemptsForUpdate(ctx context.Context, db *gorm.DB, testTakerID uint64, data ProductData) (*Attempts, error)
 	UpdateAttemptsRefund(ctx context.Context, db *gorm.DB, testTakerID uint64, refund int32, data ProductData) error
+	AddAttempts(ctx context.Context, db *gorm.DB, testTakerID uint64, attempts int32, data ProductData) error
 }
 
 type ExportQueueRepository interface {
@@ -73,4 +83,5 @@ type ExportQueueRepository interface {
 type AdminAttemptsUseCase interface {
 	GetSessionStatus(ctx context.Context, testTakerID uint64) (*SessionStatus, error)
 	AdminUpdateAttempts(ctx context.Context, req AdminUpdateAttemptsRequest) (*AdminUpdateAttemptsResponse, error)
+	AdminAddAttempts(ctx context.Context, req AdminAddAttemptsRequest) (*AdminUpdateAttemptsResponse, error)
 }

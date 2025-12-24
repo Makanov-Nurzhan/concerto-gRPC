@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	ConcertoAdminService_GetSessionStatus_FullMethodName    = "/concerto.admin.v1.ConcertoAdminService/GetSessionStatus"
 	ConcertoAdminService_AdminUpdateAttempts_FullMethodName = "/concerto.admin.v1.ConcertoAdminService/AdminUpdateAttempts"
+	ConcertoAdminService_AdminAddAttempts_FullMethodName    = "/concerto.admin.v1.ConcertoAdminService/AdminAddAttempts"
 )
 
 // ConcertoAdminServiceClient is the client API for ConcertoAdminService service.
@@ -29,6 +30,7 @@ const (
 type ConcertoAdminServiceClient interface {
 	GetSessionStatus(ctx context.Context, in *GetSessionStatusRequest, opts ...grpc.CallOption) (*GetSessionStatusResponse, error)
 	AdminUpdateAttempts(ctx context.Context, in *AdminUpdateAttemptsRequest, opts ...grpc.CallOption) (*AdminUpdateAttemptsResponse, error)
+	AdminAddAttempts(ctx context.Context, in *AdminAddAttemptsRequest, opts ...grpc.CallOption) (*AdminUpdateAttemptsResponse, error)
 }
 
 type concertoAdminServiceClient struct {
@@ -59,12 +61,23 @@ func (c *concertoAdminServiceClient) AdminUpdateAttempts(ctx context.Context, in
 	return out, nil
 }
 
+func (c *concertoAdminServiceClient) AdminAddAttempts(ctx context.Context, in *AdminAddAttemptsRequest, opts ...grpc.CallOption) (*AdminUpdateAttemptsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AdminUpdateAttemptsResponse)
+	err := c.cc.Invoke(ctx, ConcertoAdminService_AdminAddAttempts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConcertoAdminServiceServer is the server API for ConcertoAdminService service.
 // All implementations must embed UnimplementedConcertoAdminServiceServer
 // for forward compatibility.
 type ConcertoAdminServiceServer interface {
 	GetSessionStatus(context.Context, *GetSessionStatusRequest) (*GetSessionStatusResponse, error)
 	AdminUpdateAttempts(context.Context, *AdminUpdateAttemptsRequest) (*AdminUpdateAttemptsResponse, error)
+	AdminAddAttempts(context.Context, *AdminAddAttemptsRequest) (*AdminUpdateAttemptsResponse, error)
 	mustEmbedUnimplementedConcertoAdminServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedConcertoAdminServiceServer) GetSessionStatus(context.Context,
 }
 func (UnimplementedConcertoAdminServiceServer) AdminUpdateAttempts(context.Context, *AdminUpdateAttemptsRequest) (*AdminUpdateAttemptsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AdminUpdateAttempts not implemented")
+}
+func (UnimplementedConcertoAdminServiceServer) AdminAddAttempts(context.Context, *AdminAddAttemptsRequest) (*AdminUpdateAttemptsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AdminAddAttempts not implemented")
 }
 func (UnimplementedConcertoAdminServiceServer) mustEmbedUnimplementedConcertoAdminServiceServer() {}
 func (UnimplementedConcertoAdminServiceServer) testEmbeddedByValue()                              {}
@@ -138,6 +154,24 @@ func _ConcertoAdminService_AdminUpdateAttempts_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConcertoAdminService_AdminAddAttempts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminAddAttemptsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConcertoAdminServiceServer).AdminAddAttempts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConcertoAdminService_AdminAddAttempts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConcertoAdminServiceServer).AdminAddAttempts(ctx, req.(*AdminAddAttemptsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConcertoAdminService_ServiceDesc is the grpc.ServiceDesc for ConcertoAdminService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var ConcertoAdminService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AdminUpdateAttempts",
 			Handler:    _ConcertoAdminService_AdminUpdateAttempts_Handler,
+		},
+		{
+			MethodName: "AdminAddAttempts",
+			Handler:    _ConcertoAdminService_AdminAddAttempts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

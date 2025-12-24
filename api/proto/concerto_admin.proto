@@ -8,6 +8,8 @@ service ConcertoAdminService {
   rpc GetSessionStatus (GetSessionStatusRequest) returns (GetSessionStatusResponse);
 
   rpc AdminUpdateAttempts (AdminUpdateAttemptsRequest) returns (AdminUpdateAttemptsResponse);
+
+  rpc AdminAddAttempts (AdminAddAttemptsRequest) returns (AdminUpdateAttemptsResponse);
 }
 
 message GetSessionStatusRequest {
@@ -36,10 +38,18 @@ message AdminUpdateAttemptsResponse {
   bool   success          = 1;
   string error_code       = 2;
   string error_message    = 3;
-
   uint64 test_taker_id    = 4;
   int32  attempts_total   = 5;
   int32  attempts_used    = 6;
   int32 refund = 7;
+}
 
+message AdminAddAttemptsRequest {
+  string operation_id = 1;
+  uint64 test_taker_id = 2;
+  int32 attempts_to_add = 3;
+  int32  current_attempts = 4;
+  int32  current_used = 5;
+  int32  product_variant = 6;
+  string product_language = 7;
 }
