@@ -122,7 +122,7 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 	}, nil
 }
 
-func (s *Server) AddAttempts(ctx context.Context, req *adminv1.AdminAddAttemptsRequest) (*adminv1.AdminUpdateAttemptsResponse, error) {
+func (s *Server) AdminAddAttempts(ctx context.Context, req *adminv1.AdminAddAttemptsRequest) (*adminv1.AdminUpdateAttemptsResponse, error) {
 	logger := slog.Default().With("method", "AddAttempts")
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "request is nil")
