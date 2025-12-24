@@ -20,12 +20,13 @@ func (a attemptsOperationRepo) GetByOperationID(ctx context.Context, db *gorm.DB
 	}
 
 	var row struct {
-		OperationID    string
-		TestTakerID    uint64 `gorm:"column:test_taker_id"`
-		Variant        int32
-		Lang           string
-		AttemptsRefund int32 `gorm:"column:attempts_refund"`
-		Status         string
+		OperationID   string
+		TestTakerID   uint64 `gorm:"column:test_taker_id"`
+		Variant       int32
+		Lang          string
+		Attempts      int32  `gorm:"column:attempts"`
+		OperationType string `gorm:"column:operation_type"`
+		Status        string
 	}
 
 	err := db.WithContext(ctx).
@@ -40,12 +41,13 @@ func (a attemptsOperationRepo) GetByOperationID(ctx context.Context, db *gorm.DB
 	}
 
 	op := &domain.AttemptsOperation{
-		OperationID:      row.OperationID,
-		TestTakerID:      row.TestTakerID,
-		Variant:          row.Variant,
-		Lang:             row.Lang,
-		AttemptsToRefund: row.AttemptsRefund,
-		Status:           domain.OperationStatus(row.Status),
+		OperationID:   row.OperationID,
+		TestTakerID:   row.TestTakerID,
+		Variant:       row.Variant,
+		Lang:          row.Lang,
+		Attempts:      row.Attempts,
+		OperationType: row.OperationType,
+		Status:        domain.OperationStatus(row.Status),
 	}
 
 	return op, true, nil
@@ -59,14 +61,15 @@ func (a attemptsOperationRepo) CreatePending(ctx context.Context, db *gorm.DB, o
 	return db.WithContext(ctx).
 		Exec(`
             INSERT INTO online_ko_admin_attempts_operations
-                (operation_id, test_taker_id, variant, lang, attempts_refund, status)
-            VALUES (?, ?, ?, ?, ?, 'pending')
+                (operation_id, test_taker_id, variant, lang, attempts, operation_type, status)
+            VALUES (?, ?, ?, ?, ?, ?, 'pending')
         `,
 			op.OperationID,
 			op.TestTakerID,
 			op.Variant,
 			op.Lang,
-			op.AttemptsToRefund,
+			op.Attempts,
+			op.OperationType,
 		).Error
 }
 
