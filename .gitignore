@@ -1,0 +1,98 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+docs
+docs/
+data/
+./data
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# dotenv
+*.env
+.env.*
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS / Linux / Windows
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+*.bak
+*.tmp
+*.cache/
+*.pid
+docker/docker/
+# Python test artifacts
+htmlcov/
+.tox/
+.coverage
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Migrations (если не используешь Alembic — убери)
+migrations/
+alembic/
+
+# FastAPI build artifacts
+*.db
+instance/
+__pypackages__/
+
+# Node (React frontend)
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Go
+*.exe
+*.test
+*.out
+
+
+bin/
+
+# Docker volumes
+mysql/
+docker/*.sock
+*.tar
+*.img
+
+# Files stored on mounted SMB
+/files/
+mnt/
+*.xlsx
+*.csv
+
+# OS files
+ehthumbs.db
+Icon?
+desktop.ini
+
+# JetBrains (PyCharm, GoLand, WebStorm)
+*.iml
+*.ipr
+*.iws
+out/
+
+# Coverage reports
+coverage/
+cov.xml
+.nyc_output/
+lcov-report/

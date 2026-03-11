@@ -12,35 +12,25 @@ import (
 )
 
 type App struct {
-	TxManager tx.Manager
-
+	TxManager             tx.Manager
 	SessionRepo           domain.SessionRepository
 	AttemptsRepo          domain.AttemptsRepository
 	ExportQueueRepo       domain.ExportQueueRepository
 	AttemptsOperationRepo domain.AttemptsOperationRepository
-
-	adminUC domain.AdminAttemptsUseCase
-
-	GRPCServer *grpc.Server
+	adminUC               domain.AdminAttemptsUseCase
+	GRPCServer            *grpc.Server
 }
 
 func NewApp(db *gorm.DB) (*App, error) {
 	a := &App{}
-
 	txManager := tx.New(db)
-
 	a.SessionRepo = repository.NewSessionRepository(db)
 	a.AttemptsRepo = repository.NewAttemptsRepository(db)
 	a.ExportQueueRepo = repository.NewExportQueueRepository(db)
 	a.AttemptsOperationRepo = repository.NewAttemptsOperationRepository(db)
-
 	a.adminUC = usecase.NewAdminAttemptsUseCase(txManager, a.SessionRepo, a.AttemptsRepo, a.ExportQueueRepo, a.AttemptsOperationRepo)
-
 	a.GRPCServer = grpc.NewServer()
-
 	handler := deliverygrpc.NewServer(a.adminUC)
-
 	adminv1.RegisterConcertoAdminServiceServer(a.GRPCServer, handler)
-
 	return a, nil
 }
