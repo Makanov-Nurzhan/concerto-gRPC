@@ -235,6 +235,13 @@ func (a *adminAttemptUseCase) AdminAddAttempts(ctx context.Context, req domain.A
 		if err := a.attemptsRepo.AddAttempts(ctx, txDB, req.TestTakerID, req.AttemptsToAdd, req.ProductData); err != nil {
 			return err
 		}
+
+		if req.OperationID != "" {
+			if err := a.opRepo.MarkSuccess(ctx, txDB, req.OperationID); err != nil {
+				return err
+			}
+		}
+
 		payload := events.AddAttemptsV1{
 			OperationID: req.OperationID,
 			TestTakerID: req.TestTakerID,
