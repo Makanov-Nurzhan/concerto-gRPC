@@ -77,6 +77,7 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 		"attempts_to_refund", req.AttemptsToRefund,
 		"current_attempts", req.CurrentAttempts,
 		"current_used", req.CurrentUsed,
+		"grade", req.Grade,
 	)
 
 	input := domain.AdminUpdateAttemptsRequest{
@@ -88,6 +89,7 @@ func (s *Server) AdminUpdateAttempts(ctx context.Context, req *adminv1.AdminUpda
 		ProductData: domain.ProductData{
 			ProductVariant:  req.ProductVariant,
 			ProductLanguage: req.ProductLanguage,
+			Grade:           req.Grade,
 		},
 	}
 

@@ -33,8 +33,9 @@ func (a *attemptsRepo) GetAttemptsForUpdate(ctx context.Context, db *gorm.DB, te
 			WHERE user_id = ?
 			  AND variant = ?
 			  AND lang = ?
+			  AND grade = ?
 			FOR UPDATE`,
-			testTakerID, data.ProductVariant, data.ProductLanguage,
+			testTakerID, data.ProductVariant, data.ProductLanguage, data.Grade,
 		).Scan(&row).Error; err != nil {
 		return nil, err
 	}
@@ -52,7 +53,8 @@ func (a *attemptsRepo) UpdateAttemptsRefund(ctx context.Context, db *gorm.DB, te
 			Where user_id = ?
 			AND variant = ?
 			AND lang = ?
-			`, refund, testTakerID, data.ProductVariant, data.ProductLanguage).Error
+			AND grade = ?
+			`, refund, testTakerID, data.ProductVariant, data.ProductLanguage, data.Grade).Error
 }
 
 func (a *attemptsRepo) AddAttempts(ctx context.Context, db *gorm.DB, testTakerID uint64, attempts int32, data domain.ProductData) error {
@@ -66,5 +68,6 @@ func (a *attemptsRepo) AddAttempts(ctx context.Context, db *gorm.DB, testTakerID
 			Where user_id = ?
 			AND variant = ?
 			AND lang = ?
-			`, attempts, testTakerID, data.ProductVariant, data.ProductLanguage).Error
+			AND grade = ?
+			`, attempts, testTakerID, data.ProductVariant, data.ProductLanguage, data.Grade).Error
 }

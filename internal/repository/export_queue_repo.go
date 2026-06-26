@@ -26,8 +26,8 @@ func (e exportQueueRepo) HasFinishFirstDay(ctx context.Context, db *gorm.DB, tes
 	err := db.WithContext(ctx).
 		Table("online_ko_export_queue").
 		Select("id, user_id as test_taker_id, test_attempt, created_at").
-		Where("user_id = ? AND test_attempt = ? AND variant = ? AND lang = ?",
-			testTakerID, attempt, product.ProductVariant, product.ProductLanguage).
+		Where("user_id = ? AND test_attempt = ? AND variant = ? AND lang = ? AND grade = ?",
+			testTakerID, attempt, product.ProductVariant, product.ProductLanguage, product.Grade).
 		First(&data).Error
 
 	if err != nil {

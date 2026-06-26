@@ -30,8 +30,9 @@ message AdminUpdateAttemptsRequest {
   int32  current_attempts = 3;
   int32  current_used = 4;
   int32  attempts_to_refund = 5;
-  int32  product_variant = 6;
-  string product_language = 7;
+  int32  grade = 6;
+  int32  product_variant = 7;
+  string product_language = 8;
 }
 
 message AdminUpdateAttemptsResponse {
@@ -50,6 +51,7 @@ message AdminAddAttemptsRequest {
   int32 attempts_to_add = 3;
   int32  current_attempts = 4;
   int32  current_used = 5;
-  int32  product_variant = 6;
-  string product_language = 7;
+  int32  grade = 6;
+  int32  product_variant = 7;
+  string product_language = 8;
 }

@@ -75,6 +75,7 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 			newOp := &domain.AttemptsOperation{
 				OperationID:   req.OperationID,
 				TestTakerID:   req.TestTakerID,
+				Grade:         req.ProductData.Grade,
 				Variant:       req.ProductData.ProductVariant,
 				Lang:          req.ProductData.ProductLanguage,
 				Attempts:      req.AttemptsToRefund,
@@ -146,6 +147,7 @@ func (a *adminAttemptUseCase) AdminUpdateAttempts(ctx context.Context, req domai
 		payload := events.RefundUpdateV1{
 			OperationID: req.OperationID,
 			TestTakerID: req.TestTakerID,
+			Grade:       req.ProductData.Grade,
 			Variant:     req.ProductData.ProductVariant,
 			Lang:        req.ProductData.ProductLanguage,
 			Refund:      req.AttemptsToRefund,
@@ -201,6 +203,7 @@ func (a *adminAttemptUseCase) AdminAddAttempts(ctx context.Context, req domain.A
 			newOp := &domain.AttemptsOperation{
 				OperationID:   req.OperationID,
 				TestTakerID:   req.TestTakerID,
+				Grade:         req.ProductData.Grade,
 				Variant:       req.ProductData.ProductVariant,
 				Lang:          req.ProductData.ProductLanguage,
 				Attempts:      req.AttemptsToAdd,
@@ -245,6 +248,7 @@ func (a *adminAttemptUseCase) AdminAddAttempts(ctx context.Context, req domain.A
 		payload := events.AddAttemptsV1{
 			OperationID: req.OperationID,
 			TestTakerID: req.TestTakerID,
+			Grade:       req.ProductData.Grade,
 			Variant:     req.ProductData.ProductVariant,
 			Lang:        req.ProductData.ProductLanguage,
 			Attempts:    req.AttemptsToAdd,

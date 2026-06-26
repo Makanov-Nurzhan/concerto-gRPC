@@ -61,11 +61,12 @@ func (a attemptsOperationRepo) CreatePending(ctx context.Context, db *gorm.DB, o
 	return db.WithContext(ctx).
 		Exec(`
             INSERT INTO online_ko_admin_attempts_operations
-                (operation_id, test_taker_id, variant, lang, attempts, operation_type, status)
-            VALUES (?, ?, ?, ?, ?, ?, 'pending')
+                (operation_id, test_taker_id, grade, variant, lang, attempts, operation_type, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')
         `,
 			op.OperationID,
 			op.TestTakerID,
+			op.Grade,
 			op.Variant,
 			op.Lang,
 			op.Attempts,

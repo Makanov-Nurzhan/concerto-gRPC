@@ -7,6 +7,7 @@ import (
 )
 
 type ProductData struct {
+	Grade           int32
 	ProductVariant  int32
 	ProductLanguage string
 }

@@ -8,6 +8,7 @@ const TopicAddAttempts = "add.attempts"
 type RefundUpdateV1 struct {
 	OperationID string    `json:"operation_id"`
 	TestTakerID uint64    `json:"test_taker_id"`
+	Grade       int32     `json:"grade"`
 	Variant     int32     `json:"variant"`
 	Lang        string    `json:"lang"`
 	Refund      int32     `json:"refund"`
@@ -16,6 +17,7 @@ type RefundUpdateV1 struct {
 type AddAttemptsV1 struct {
 	OperationID string    `json:"operation_id"`
 	TestTakerID uint64    `json:"test_taker_id"`
+	Grade       int32     `json:"grade"`
 	Variant     int32     `json:"variant"`
 	Lang        string    `json:"lang"`
 	Attempts    int32     `json:"attempts"`

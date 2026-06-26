@@ -148,8 +148,9 @@ type AdminUpdateAttemptsRequest struct {
 	CurrentAttempts  int32                  `protobuf:"varint,3,opt,name=current_attempts,json=currentAttempts,proto3" json:"current_attempts,omitempty"`
 	CurrentUsed      int32                  `protobuf:"varint,4,opt,name=current_used,json=currentUsed,proto3" json:"current_used,omitempty"`
 	AttemptsToRefund int32                  `protobuf:"varint,5,opt,name=attempts_to_refund,json=attemptsToRefund,proto3" json:"attempts_to_refund,omitempty"`
-	ProductVariant   int32                  `protobuf:"varint,6,opt,name=product_variant,json=productVariant,proto3" json:"product_variant,omitempty"`
-	ProductLanguage  string                 `protobuf:"bytes,7,opt,name=product_language,json=productLanguage,proto3" json:"product_language,omitempty"`
+	Grade            int32                  `protobuf:"varint,6,opt,name=grade,proto3" json:"grade,omitempty"`
+	ProductVariant   int32                  `protobuf:"varint,7,opt,name=product_variant,json=productVariant,proto3" json:"product_variant,omitempty"`
+	ProductLanguage  string                 `protobuf:"bytes,8,opt,name=product_language,json=productLanguage,proto3" json:"product_language,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -215,6 +216,13 @@ func (x *AdminUpdateAttemptsRequest) GetCurrentUsed() int32 {
 func (x *AdminUpdateAttemptsRequest) GetAttemptsToRefund() int32 {
 	if x != nil {
 		return x.AttemptsToRefund
+	}
+	return 0
+}
+
+func (x *AdminUpdateAttemptsRequest) GetGrade() int32 {
+	if x != nil {
+		return x.Grade
 	}
 	return 0
 }
@@ -332,8 +340,9 @@ type AdminAddAttemptsRequest struct {
 	AttemptsToAdd   int32                  `protobuf:"varint,3,opt,name=attempts_to_add,json=attemptsToAdd,proto3" json:"attempts_to_add,omitempty"`
 	CurrentAttempts int32                  `protobuf:"varint,4,opt,name=current_attempts,json=currentAttempts,proto3" json:"current_attempts,omitempty"`
 	CurrentUsed     int32                  `protobuf:"varint,5,opt,name=current_used,json=currentUsed,proto3" json:"current_used,omitempty"`
-	ProductVariant  int32                  `protobuf:"varint,6,opt,name=product_variant,json=productVariant,proto3" json:"product_variant,omitempty"`
-	ProductLanguage string                 `protobuf:"bytes,7,opt,name=product_language,json=productLanguage,proto3" json:"product_language,omitempty"`
+	Grade           int32                  `protobuf:"varint,6,opt,name=grade,proto3" json:"grade,omitempty"`
+	ProductVariant  int32                  `protobuf:"varint,7,opt,name=product_variant,json=productVariant,proto3" json:"product_variant,omitempty"`
+	ProductLanguage string                 `protobuf:"bytes,8,opt,name=product_language,json=productLanguage,proto3" json:"product_language,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -403,6 +412,13 @@ func (x *AdminAddAttemptsRequest) GetCurrentUsed() int32 {
 	return 0
 }
 
+func (x *AdminAddAttemptsRequest) GetGrade() int32 {
+	if x != nil {
+		return x.Grade
+	}
+	return 0
+}
+
 func (x *AdminAddAttemptsRequest) GetProductVariant() int32 {
 	if x != nil {
 		return x.ProductVariant
@@ -430,15 +446,16 @@ const file_concerto_admin_proto_rawDesc = "" +
 	"\x13can_update_attempts\x18\x03 \x01(\bR\x11canUpdateAttempts\x12\x1d\n" +
 	"\n" +
 	"session_id\x18\x04 \x01(\x05R\tsessionId\x12,\n" +
-	"\x12session_start_date\x18\x05 \x01(\tR\x10sessionStartDate\"\xb3\x02\n" +
+	"\x12session_start_date\x18\x05 \x01(\tR\x10sessionStartDate\"\xc9\x02\n" +
 	"\x1aAdminUpdateAttemptsRequest\x12!\n" +
 	"\foperation_id\x18\x01 \x01(\tR\voperationId\x12\"\n" +
 	"\rtest_taker_id\x18\x02 \x01(\x04R\vtestTakerId\x12)\n" +
 	"\x10current_attempts\x18\x03 \x01(\x05R\x0fcurrentAttempts\x12!\n" +
 	"\fcurrent_used\x18\x04 \x01(\x05R\vcurrentUsed\x12,\n" +
-	"\x12attempts_to_refund\x18\x05 \x01(\x05R\x10attemptsToRefund\x12'\n" +
-	"\x0fproduct_variant\x18\x06 \x01(\x05R\x0eproductVariant\x12)\n" +
-	"\x10product_language\x18\a \x01(\tR\x0fproductLanguage\"\x83\x02\n" +
+	"\x12attempts_to_refund\x18\x05 \x01(\x05R\x10attemptsToRefund\x12\x14\n" +
+	"\x05grade\x18\x06 \x01(\x05R\x05grade\x12'\n" +
+	"\x0fproduct_variant\x18\a \x01(\x05R\x0eproductVariant\x12)\n" +
+	"\x10product_language\x18\b \x01(\tR\x0fproductLanguage\"\x83\x02\n" +
 	"\x1bAdminUpdateAttemptsResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x1d\n" +
 	"\n" +
@@ -447,15 +464,16 @@ const file_concerto_admin_proto_rawDesc = "" +
 	"\rtest_taker_id\x18\x04 \x01(\x04R\vtestTakerId\x12%\n" +
 	"\x0eattempts_total\x18\x05 \x01(\x05R\rattemptsTotal\x12#\n" +
 	"\rattempts_used\x18\x06 \x01(\x05R\fattemptsUsed\x12\x16\n" +
-	"\x06refund\x18\a \x01(\x05R\x06refund\"\xaa\x02\n" +
+	"\x06refund\x18\a \x01(\x05R\x06refund\"\xc0\x02\n" +
 	"\x17AdminAddAttemptsRequest\x12!\n" +
 	"\foperation_id\x18\x01 \x01(\tR\voperationId\x12\"\n" +
 	"\rtest_taker_id\x18\x02 \x01(\x04R\vtestTakerId\x12&\n" +
 	"\x0fattempts_to_add\x18\x03 \x01(\x05R\rattemptsToAdd\x12)\n" +
 	"\x10current_attempts\x18\x04 \x01(\x05R\x0fcurrentAttempts\x12!\n" +
-	"\fcurrent_used\x18\x05 \x01(\x05R\vcurrentUsed\x12'\n" +
-	"\x0fproduct_variant\x18\x06 \x01(\x05R\x0eproductVariant\x12)\n" +
-	"\x10product_language\x18\a \x01(\tR\x0fproductLanguage2\xe9\x02\n" +
+	"\fcurrent_used\x18\x05 \x01(\x05R\vcurrentUsed\x12\x14\n" +
+	"\x05grade\x18\x06 \x01(\x05R\x05grade\x12'\n" +
+	"\x0fproduct_variant\x18\a \x01(\x05R\x0eproductVariant\x12)\n" +
+	"\x10product_language\x18\b \x01(\tR\x0fproductLanguage2\xe9\x02\n" +
 	"\x14ConcertoAdminService\x12k\n" +
 	"\x10GetSessionStatus\x12*.concerto.admin.v1.GetSessionStatusRequest\x1a+.concerto.admin.v1.GetSessionStatusResponse\x12t\n" +
 	"\x13AdminUpdateAttempts\x12-.concerto.admin.v1.AdminUpdateAttemptsRequest\x1a..concerto.admin.v1.AdminUpdateAttemptsResponse\x12n\n" +

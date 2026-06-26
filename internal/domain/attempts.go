@@ -19,6 +19,7 @@ const (
 type AttemptsOperation struct {
 	OperationID   string
 	TestTakerID   uint64
+	Grade         int32
 	Variant       int32
 	Lang          string
 	Attempts      int32
