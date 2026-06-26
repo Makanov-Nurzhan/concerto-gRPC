@@ -148,6 +148,7 @@ func (s *Server) AdminAddAttempts(ctx context.Context, req *adminv1.AdminAddAtte
 		ProductData: domain.ProductData{
 			ProductVariant:  req.ProductVariant,
 			ProductLanguage: req.ProductLanguage,
+			Grade:           req.Grade,
 		},
 	}
 	resp, err := s.adminUC.AdminAddAttempts(ctx, input)
